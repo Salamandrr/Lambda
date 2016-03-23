@@ -156,8 +156,7 @@ let rec normalise t =
 
 
 (*Exercice 6*)
-(** 1 **)
-
+(*1*)
 let vrai=Abs("x",Abs("y",Var"x"));;
 let faux=Abs("x",Abs("y",Var"y"));;
 let cond=Abs("c",Abs("v",Abs("f",App(App(Var"c",Var"v"),Var"f"))));;
@@ -191,6 +190,6 @@ let iszero=Abs("n",App(Var"n",App(Abs("x",faux),vrai)));;
 let pred=Abs("n",Abs("f",Abs("x",App(Var"n",App(App(Abs("p",App(pair,App(snd,Var"p"))),App(Var"f",App(snd,Var"p"))),Abs("t",App(App(Var"t",Var"x"),Var"x")))))));;
 let h=Abs("f",Abs("n",(App(App(App(cond,App(iszero,Var"n")),un),App(App(Var"x",Var"n"),App(Var"f",App(pred,Var"n")))))));;
 let fac=App(combinateur_de_pt_fixe_de_turing,h);;
-let fac_2=normalise (App(fac,deux));;
-(*let factorielle;;
+(*let fac_2=normalise (App(combinateur_de_pt_fixe_de_turing,App(h,deux)));;
+let factorielle;;
 *)
