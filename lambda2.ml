@@ -184,8 +184,7 @@ let snd=Abs ("t",App (Var "t",faux));;
 let pair=Abs ("x",Abs ("y",Abs("t",App(App(Var "t",Var "x"),Var "y"))));;
 let iszero=Abs ("n",App (Var "n",App (Abs ("x",faux),vrai)));;
 let pred=Abs ("n", Abs("f",Abs ("x",
-App (fst,App (Var "n",App (App (Abs ("p",App (pair,App(App (snd,Var "p"),App (Var "f",App (snd,Var "p"))))),
-Abs ("t",App (App (Var "t",Var "x"),Var "x")))))))));;
+App (fst,App (Var "n",App (App (Abs ("p",App (pair,App(App (snd,Var "p"),App (Var "f",App (snd,Var "p"))))),Abs ("t",App (App (Var "t",Var "x"),Var "x")))))))));;
 let h=Abs ("f",Abs ("n",(App (App (cond,App (iszero,Var "n")),App (un,App (App (multiplication,Var "n"),App (Var "f",App (pred,Var "n"))))))));;
 let fac=App (combinateur_de_pt_fixe_de_turing,h);;
 (*let fac_2=normalise (App(combinateur_de_pt_fixe_de_turing,App(h,deux)));;
