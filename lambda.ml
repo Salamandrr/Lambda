@@ -20,35 +20,31 @@ type terme =
 	| App of terme * terme
 ;;
 
-print_string("fuck");;
-
-print_string("les sapins ça pique");;
-
 (*2*)
 (*a*)
-let i = Abs("x", Var "x");;
+let i = Abs ("x", Var "x");;
 
 (*b*)
-let a = App(i, Var  "a");;
+let a = App (i, Var  "a");;
 
 (*c*)
-let k = Abs("x", Abs("y", Var "x"));;
+let k = Abs ("x", Abs ("y", Var "x"));;
 
 (*d*)
-let s = Abs("x", Abs("y", Abs("z", App(App(Var "x", Var "z"), App(Var "y", Var "z")))));;
+let s = Abs ("x", Abs ("y", Abs ("z", App (App (Var "x", Var "z"), App (Var "y", Var "z")))));;
 
 (*e*)
-let delta = App(Abs("x", Var "x"), Var "x");;
+let delta = App (Abs ("x", Var "x"), Var "x");;
 
 (*f*)
-let omega = App(delta, delta);;
+let omega = App (delta, delta);;
 
 (*3*)
 let rec print_terme t =
 	match t with
 	Cst c -> print_string(c)
 	| Var x -> print_string(x)
-	| Abs(x,e) -> print_string("(\\" ^ x ^ "."); print_terme(e); print_string(")")
+	| Abs (x,e) -> print_string("(\\" ^ x ^ "."); print_terme(e); print_string(")")
 	| App(t1,t2) -> print_string("("); print_terme(t1); print_string(" "); print_terme(t2); print_string(")")
 ;;
 
@@ -65,8 +61,8 @@ let rec fv t =
     match t with
     |Var x -> [x]
     |Cst c -> []
-    |App(m,n)->union(fv m)(fv n)
-    |Abs(x,m)->remove(fv m) x
+    |App (m,n)->union(fv m)(fv n)
+    |Abs (x,m)->remove(fv m) x
 ;;
 
 
@@ -144,8 +140,8 @@ let rec etape_NOR t =
     |App (m,n) ->
             let nor = etape_NOR n in
             if n = nor then App (etape_NOR m,n)
-            else App(m,nor)
-    |Abs (x,e) -> Abs(x,etape_NOR e)
+            else App (m,nor)
+    |Abs (x,e) -> Abs (x,etape_NOR e)
 ;;
 
 (*3*)
@@ -157,39 +153,39 @@ let rec normalise t =
 
 (*Exercice 6*)
 (*1*)
-let vrai=Abs("x",Abs("y",Var"x"));;
-let faux=Abs("x",Abs("y",Var"y"));;
-let cond=Abs("c",Abs("v",Abs("f",App(App(Var"c",Var"v"),Var"f"))));;
+let vrai=Abs ("x",Abs ("y",Var "x"));;
+let faux=Abs ("x",Abs ("y",Var "y"));;
+let cond=Abs ("c",Abs ("v",Abs ("f",App (App (Var "c",Var "v"),Var "f"))));;
 
-let cond_vrai=normalise (App(App(App(cond,vrai),Var"u"),Var"v"));;
-let cond_faux=normalise (App(App(App(cond,faux),Var"u"),Var"v"));;
+let cond_vrai=normalise (App (App (App (cond,vrai),Var "u"),Var "v"));;
+let cond_faux=normalise (App (App (App (cond,faux),Var "u"),Var "v"));;
 
 (*2*)
-let successeur=Abs("n",Abs("f",Abs("x",App(Var"f",App(App(Var"n",Var"f"),Var"x")))));;
-let addition=Abs("n",Abs("m",Abs("f",Abs("x",App(App(Var"n",Var"f"),App(App(Var"m",Var"f"),Var"x"))))));;
-let multiplication=Abs("n",Abs("m",Abs("f",App(Var"m",App(Var"n",Var"f")))));;
+let successeur=Abs ("n",Abs ("f",Abs ("x",App (Var "f",App (App (Var "n",Var "f"),Var "x")))));;
+let addition=Abs ("n",Abs ("m",Abs ("f",Abs ("x",App (App (Var "n",Var "f"),App (App (Var "m",Var "f"),Var "x"))))));;
+let multiplication=Abs ("n",Abs ("m",Abs ("f",App (Var "m",App (Var "n",Var "f")))));;
 
-let zero=Abs("f",Abs("x",Var"x"));;
-let un=Abs("f",Abs("x",App(Var"f",Var"x")));;
-let deux=Abs("f",Abs("x",App(Var"f",App(Var"f",Var"x"))));;
+let zero=Abs ("f",Abs ("x",Var "x"));;
+let un=Abs ("f",Abs ("x",App (Var "f",Var "x")));;
+let deux=Abs ("f",Abs ("x",App (Var "f",App (Var "f",Var "x"))));;
 
-let somme_un_deux=normalise (App(App(addition,un),deux));;
+let somme_un_deux=normalise (App (App (addition,un),deux));;
 print_terme somme_un_deux;;
-let successeur_zero=normalise (App(successeur,zero));;
+let successeur_zero=normalise (App (successeur,zero));;
 print_terme successeur_zero;;
-let multiplication_deux_deux=normalise (App(App(multiplication,deux),deux));;
+let multiplication_deux_deux=normalise (App (App (multiplication,deux),deux));;
 print_terme multiplication_deux_deux;;
 
 (*3*)
-let combinateur_de_pt_fixe_de_turing=App(Abs("x",Abs("y",App(Var"y",App(App(Var"x",Var"x"),Var"y")))),Abs("x",Abs("y",App(Var"y",App(App(Var"x",Var"x"),Var"y")))));;
+let combinateur_de_pt_fixe_de_turing=App (Abs ("x",Abs ("y",App(Var "y",App (App (Var "x",Var "x"),Var "y")))),Abs ("x",Abs ("y",App (Var "y",App (App (Var "x",Var "x"),Var "y")))));;
 print_terme combinateur_de_pt_fixe_de_turing;;
-let fst=Abs("t",App(Var"t",vrai));;
-let snd=Abs("t",App(Var"t",faux));;
-let pair=Abs("x",Abs("y",Abs("t",App(App(Var"t",Var"x"),Var"y"))));;
-let iszero=Abs("n",App(Var"n",App(Abs("x",faux),vrai)));;
-let pred=Abs("n",Abs("f",Abs("x",App(Var"n",App(App(Abs("p",App(pair,App(snd,Var"p"))),App(Var"f",App(snd,Var"p"))),Abs("t",App(App(Var"t",Var"x"),Var"x")))))));;
-let h=Abs("f",Abs("n",(App(App(App(cond,App(iszero,Var"n")),un),App(App(Var"x",Var"n"),App(Var"f",App(pred,Var"n")))))));;
-let fac=App(combinateur_de_pt_fixe_de_turing,h);;
+let fst=Abs ("t",App (Var "t",vrai));;
+let snd=Abs ("t",App (Var "t",faux));;
+let pair=Abs ("x",Abs ("y",Abs("t",App(App(Var "t",Var "x"),Var "y"))));;
+let iszero=Abs ("n",App (Var "n",App (Abs ("x",faux),vrai)));;
+let pred=Abs ("n", Abs("f",Abs ("x",App (Var "n",App (App (Abs ("p",App (pair,App (snd,Var "p"))),App (Var "f",App (snd,Var "p"))),Abs ("t",App (App (Var "t",Var "x"),Var "x")))))));;
+let h=Abs ("f",Abs ("n",(App (App (cond,App (iszero,Var "n")),App (un,App (App (Var "x",Var "n"),App (Var "f",App (pred,Var "n"))))))));;
+let fac=App (combinateur_de_pt_fixe_de_turing,h);;
 (*let fac_2=normalise (App(combinateur_de_pt_fixe_de_turing,App(h,deux)));;
 let factorielle;;
 *)
