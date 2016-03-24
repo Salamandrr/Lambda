@@ -143,6 +143,29 @@ let rec etape_NOR t =
             else App (m,nor)
     |Abs (x,e) -> Abs (x,etape_NOR e)
 ;;
+(*
+let rec pbvar x m n =
+    if (List.mem x (bv m) && List.mem x (fv n)) 
+    then pbvar x (alpha m x (variable_fraiche (union (vars m) (vars n)))) n 
+    else subst m x n
+
+let rec etape_NOR t =
+    match t with 
+    |Var x -> Var x
+    |Cst c -> Cst c
+    |App (Abs (x,m),n) -> subst m x n
+    |App (m,n) -> if n = etape_NOR n
+                  then 
+                    if m = etape_NOR m
+                    then App (m,n)
+                    else App(etape_NOR m,n)
+                  else
+                      if m = etape_NOR m
+                      then App(m,etape_NOR n)
+                      else App(etape_NOR m,etape_NOR n)
+    |Abs (x,e) -> Abs (x,etape_NOR e)
+;;
+*)
 
 (*3*)
 let rec normalise t =
@@ -182,12 +205,13 @@ print_terme combinateur_de_pt_fixe_de_turing;;
 let fst=Abs ("t",App (Var "t",vrai));;
 let snd=Abs ("t",App (Var "t",faux));;
 let pair=Abs ("x",Abs ("y",Abs("t",App(App(Var "t",Var "x"),Var "y"))));;
-let iszero=Abs ("n",App (Var "n",App (Abs ("x",faux),vrai)));;
-let pred=Abs ("n", Abs("f",Abs ("x",
-App (fst,App (Var "n",App (App (Abs ("p",App (pair,App (snd,Var "p"))),App (Var "f",App (snd,Var "p"))),
-Abs ("t",App (App (Var "t",Var "x"),Var "x"))))))));;
+let iszero=Abs ("n",App(App (Var "n",Abs ("x",faux)),vrai));;
+
+let pred =Abs("n",Abs("f",Abs("x",App(fst,App(App((Var "n"),Abs("p",App(App(pair,App(snd,(Var "p"))),App((Var "f"),App(snd,(Var "p")))))),Abs("t",App(App((Var "t"),(Var "x")),(Var "x"))))))));;
+
 let h=Abs ("f",Abs ("n",(App (App (cond,App (iszero,Var "n")),App (un,App (App (multiplication,Var "n"),App (Var "f",App (pred,Var "n"))))))));;
 let fac=App (combinateur_de_pt_fixe_de_turing,h);;
-(*let fac_2=normalise (App(combinateur_de_pt_fixe_de_turing,App(h,deux)));;
-let factorielle;;
-*)
+
+(* let fac_2=normalise (App(fac,deux));; *)
+
+
